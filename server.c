@@ -204,8 +204,8 @@ void check_clients(pool *p) {
       // of bytes received is zero: that means that the client ended the
       // conversation (sent EOF).
       fprintf(stderr, "got some bytes on file descriptor %d\n",connfd);
-      n = read(connfd,rb->requestbuf,sizeof(rb->requestbuf));
-      //rb->first_empy_byte += ???????;
+      n = read(connfd,rb->requestbuf + rb->first_empty_byte,sizeof(rb->requestbuf) - rb->first_empty_byte);
+      rb->first_empty_byte += n;
       fprintf(stderr,"%s\n",rb->requestbuf);
       if(n == 0){
       close_and_remove(p,i);
