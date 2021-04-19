@@ -228,7 +228,7 @@ void check_clients(pool *p) {
           // The server needs to respond with an OK message, and send this
           // message to every currently listening client.
 	  extract_message(rb->requestbuf,buf);
-	  for(int z = 0; z < i; z++){
+	  for(int z = 0; z < FD_SETSIZE; z++){
             if(p->receiving_events[z] == 1){
 	    writen(p->clientfd[z],buf,strlen(buf));
 	    }
