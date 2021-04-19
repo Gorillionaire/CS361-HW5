@@ -95,7 +95,10 @@ request_type parse_request(recv_buffer *ps) {
   // TODO: based on the bytes in the buffer, return a specific request type.
   // incomplete should be used when you can't tell what type of request this is,
   // so you have to wait for more bytes.
+  if(!strstr(ps->requestbuf,"\r\n\r\n")){
   return incomplete;
+  }
+  else{
   // root should be used when you've received a complete request, and you know
   // it's for index.html.
   return root;
@@ -105,9 +108,7 @@ request_type parse_request(recv_buffer *ps) {
   // sse_listen should be used when you've received a complete request, and you
   // know it's for the /listen endpoint.
   return sse_listen;
-  
-  //not recognized, return other
-  return other;
+  }
 }
 
 int main(int argc, char **argv) {
@@ -229,7 +230,9 @@ void check_clients(pool *p) {
 	  extract_message(rb->requestbuf,buf);
           break;
 	  for(int z = 0; z < i; z++){
+            if(p->receiving_events[z] == 1){
 	    writen(p->clientfd[z],buf,sizeof(buf));
+	    }
 	  }
 	  writen(connfd,OK,strlen(OK));
         case sse_listen:
@@ -243,10 +246,6 @@ void check_clients(pool *p) {
 	  writen(connfd, NOTOK,strlen(NOTOK));
 	  close_and_remove(p,i);
           break;
-	case other:
-	  writen(connfd, NOTOK,strlen(NOTOK));
-          close_and_remove(p,i);
-	  break;
       }
     }
   }
