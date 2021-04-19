@@ -230,7 +230,7 @@ void check_clients(pool *p) {
 	  extract_message(rb->requestbuf,buf);
 	  for(int z = 0; z < i; z++){
             if(p->receiving_events[z] == 1){
-	    writen(p->clientfd[z],buf,sizeof(buf));
+	    writen(p->clientfd[z],buf,strlen(buf));
 	    }
 	  }
 	  writen(connfd,OK,strlen(OK));
