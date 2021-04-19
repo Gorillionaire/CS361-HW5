@@ -234,6 +234,7 @@ void check_clients(pool *p) {
 	    }
 	  }
 	  writen(connfd,OK,strlen(OK));
+	  close_and_remove(p,i);
         case sse_listen:
           // Don't forget to add this socket to the "listening sockets that
           // should receive chat messages" list, and send back the relevant OK
