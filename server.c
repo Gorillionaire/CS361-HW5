@@ -238,7 +238,7 @@ void check_clients(pool *p) {
 	  break;
         case sse_listen:
 	  p->receiving_events[connfd] = 1;
-          writen(connfd,OK,strlen(OK));
+          writen(connfd,stream,strlen(stream));
           // Don't forget to add this socket to the "listening sockets that
           // should receive chat messages" list, and send back the relevant OK
           // message for a stream request.
